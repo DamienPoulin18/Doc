@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Privée</title>
+    <style>
+        /* Style inspiré des Unblockers modernes */
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            color: white;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.3));
+        }
+
+        .search-container {
+            width: 90%;
+            max-width: 650px;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        input:focus {
+            border-color: #3a7bd5;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(58, 123, 213, 0.4);
+        }
+
+        .shortcuts {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .icon:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>INTERSTELLAR</h1>
+
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="urlInput" placeholder="Rechercher sur Google ou entrer une URL..." autocomplete="off">
+        </form>
+    </div>
+
+    <div class="shortcuts">
+        <div class="icon" onclick="quickGo('google.com')">G</div>
+        <div class="icon" onclick="quickGo('youtube.com')">Y</div>
+        <div class="icon" onclick="quickGo('discord.com')">D</div>
+        <div class="icon" onclick="quickGo('tiktok.com')">T</div>
+    </div>
+
+    <div class="footer">Connecté via réseau sécurisé</div>
+
+    <script>
+        function go(url) {
+            if (!url) return;
+            
+            // Formatage de l'URL
+            let target;
+            if (url.includes('.') && !url.includes(' ')) {
+                target = url.startsWith('http') ? url : 'https://' + url;
+            } else {
+                target = 'https://www.google.com' + encodeURIComponent(url);
+            }
+
+            // Utilisation d'une passerelle miroir gratuite
+            // Pour contourner Fortinet, c'est l'URL ci-dessous qui fait le travail
+            const proxyGate = "https://www.croxyproxy.com";
+            window.location.href = proxyGate + encodeURIComponent(target);
+        }
+
+        document.getElementById('searchForm').onsubmit = (e) => {
+            e.preventDefault();
+            go(document.getElementById('urlInput').value);
+        };
+
+        function quickGo(site) {
+            go(site);
+        }
+    </script>
+</body>
+</html>
